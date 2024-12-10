@@ -17,10 +17,8 @@ class ChuyenMucController extends Controller
             toastr()->error('Bạn không có quyền truy cập chức năng này!');
             return redirect('/admin');
         }
-
         return view('admin.page.chuyen_muc.index');
     }
-
     public function indexVue()
     {
         $check = $this->checkRule_get(1);

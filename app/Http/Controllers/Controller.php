@@ -16,11 +16,11 @@ class Controller extends BaseController
     public function checkRule_get($id)
     {
         $admin       = Auth::guard('admin')->user();
-        if($admin->is_master){
+        if ($admin->is_master) {
             return true;
         }
         $groupAdmin  = Quyen::find($admin->id_quyen);
-        if($groupAdmin) {
+        if ($groupAdmin) {
             $listRule    = explode(',', $groupAdmin->list_rule);
             return in_array($id, $listRule);
         } else {
@@ -31,11 +31,11 @@ class Controller extends BaseController
     public function checkRule_post($id)
     {
         $admin       = Auth::guard('admin')->user();
-        if($admin->is_master){
+        if ($admin->is_master) {
             return true;
         }
         $groupAdmin  = Quyen::find($admin->id_quyen);
-        if($groupAdmin) {
+        if ($groupAdmin) {
             $listRule    = explode(',', $groupAdmin->list_rule);
             return in_array($id, $listRule);
         } else {
