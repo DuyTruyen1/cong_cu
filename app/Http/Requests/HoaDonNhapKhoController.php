@@ -15,7 +15,7 @@ class HoaDonNhapKhoController extends Controller
     public function nhapKhoChinhThuc(Request $request)
     {
         $hoaDon = HoaDonNhapKho::find($request->id);
-        if ($hoaDon && $hoaDon->tinh_trang == 0) {
+        if($hoaDon && $hoaDon->tinh_trang == 0) {
             $tongTien = ChiTietHoaDonNhapKho::where('id_hoa_don_nhap', $request->id)->sum('thanh_tien');
             $hoaDon->update([
                 'tinh_trang'                => 1,
@@ -29,6 +29,7 @@ class HoaDonNhapKhoController extends Controller
                 'status'    => true,
                 'message'   => 'Đã nhập kho thành công!',
             ]);
+
         } else {
             return response()->json([
                 'status'    => false,
@@ -40,18 +41,18 @@ class HoaDonNhapKhoController extends Controller
     public function index($id_nha_cung_cap)
     {
         $check = $this->checkRule_get(25);
-        if (!$check) {
+        if(!$check) {
             toastr()->error('Bạn không có quyền truy cập chức năng này!');
             return redirect('/admin');
         }
 
         // $nhaCungCap = NhaCungCap::where('id', $id_nha_cung_cap)->first();
         $nhaCungCap = NhaCungCap::find($id_nha_cung_cap);
-        if ($nhaCungCap) {
+        if($nhaCungCap) {
             $hoaDonNhapKho = HoaDonNhapKho::where('id_nha_cung_cap', $id_nha_cung_cap)
-                ->where('tinh_trang', 0) // Đang nhập liệu
-                ->first();
-            if (!$hoaDonNhapKho) {
+                                          ->where('tinh_trang', 0) // Đang nhập liệu
+                                          ->first();
+            if(!$hoaDonNhapKho) {
                 $hoaDonNhapKho = HoaDonNhapKho::create([
                     'id_nha_cung_cap'   => $id_nha_cung_cap
                 ]);
@@ -68,7 +69,7 @@ class HoaDonNhapKhoController extends Controller
     public function data($id_hoa_don_nhap_kho)
     {
         $check = $this->checkRule_get(25);
-        if (!$check) {
+        if(!$check) {
             toastr()->error('Bạn không có quyền truy cập chức năng này!');
             return redirect('/admin');
         }
@@ -84,7 +85,7 @@ class HoaDonNhapKhoController extends Controller
     public function store(Request $request)
     {
         $check = $this->checkRule_post(26);
-        if (!$check) {
+        if(!$check) {
             return response()->json([
                 'status'  => false,
                 'message' => 'Bạn không có quyền truy cập chức năng này!',
@@ -93,9 +94,9 @@ class HoaDonNhapKhoController extends Controller
 
 
         $chiTietHoaDon = ChiTietHoaDonNhapKho::where('id_hoa_don_nhap', $request->id_hoa_don_nhap)
-            ->where('id_san_pham', $request->id_san_pham)
-            ->first();
-        if ($chiTietHoaDon) {
+                                             ->where('id_san_pham', $request->id_san_pham)
+                                             ->first();
+        if($chiTietHoaDon) {
             $chiTietHoaDon->so_luong_nhap = $chiTietHoaDon->so_luong_nhap +  1;
             $chiTietHoaDon->save();
         } else {
@@ -115,7 +116,7 @@ class HoaDonNhapKhoController extends Controller
     public function update(UpdateChiTietNhapKhoRequest $request)
     {
         $check = $this->checkRule_post(27);
-        if (!$check) {
+        if(!$check) {
             return response()->json([
                 'status'  => false,
                 'message' => 'Bạn không có quyền truy cập chức năng này!',
@@ -138,7 +139,7 @@ class HoaDonNhapKhoController extends Controller
     public function destroy(DeleteChiTietNhapKhoRequest $request)
     {
         $check = $this->checkRule_post(28);
-        if (!$check) {
+        if(!$check) {
             return response()->json([
                 'status'  => false,
                 'message' => 'Bạn không có quyền truy cập chức năng này!',
@@ -148,7 +149,7 @@ class HoaDonNhapKhoController extends Controller
         $chiTiet = ChiTietHoaDonNhapKho::find($request->id);
         $hoaDon  = HoaDonNhapKho::find($chiTiet->id_hoa_don_nhap);
 
-        if ($hoaDon && $hoaDon->tinh_trang == 0) {
+        if($hoaDon && $hoaDon->tinh_trang == 0) {
             $chiTiet->delete();
 
             return response()->json([

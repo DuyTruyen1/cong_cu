@@ -7,6 +7,11 @@ use App\Http\Controllers\ChuyenMucController;
 use App\Http\Controllers\SanPhamController;
 use App\Http\Controllers\TinTucController;
 use App\Http\Controllers\NhaCungCapController;
+use App\Http\Controllers\HoaDonNhapKhoController;
+use App\Http\Controllers\QuyenController;
+use App\Http\Controllers\DonHangController;
+use App\Http\Controllers\ThongkeController;
+use App\Http\Controllers\ConfigController;
 
 
 Route::get('/', function () {
@@ -80,5 +85,45 @@ Route::group(['prefix' => '/admin'], function () { //, 'middleware' => 'authadmi
         Route::post('/update', [NhaCungCapController::class, 'update']);
 
         Route::post('check-mst', [NhaCungCapController::class, 'checkMST']);
+    });
+
+    Route::group(['prefix' => '/nhap-kho'], function () {
+        Route::get('/{id_nha_cung_cap}', [HoaDonNhapKhoController::class, 'index']);
+        Route::get('/data/{id_hoa_don_nhap_kho}', [HoaDonNhapKhoController::class, 'data']);
+        Route::post('/', [HoaDonNhapKhoController::class, 'store']);
+        Route::post('/update', [HoaDonNhapKhoController::class, 'update']);
+        Route::post('/delete', [HoaDonNhapKhoController::class, 'destroy']);
+        Route::post('/real', [HoaDonNhapKhoController::class, 'nhapKhoChinhThuc']);
+    });
+
+    Route::group(['prefix' => '/cau-hinh'], function () {
+        Route::get('/', [ConfigController::class, 'index']);
+        Route::get('/data', [ConfigController::class, 'getData']);
+        Route::post('/create', [ConfigController::class, 'store']);
+        Route::get('/getChuyenMuc', [ConfigController::class, 'getChuyenMuc']);
+        Route::get('/getSanPham', [ConfigController::class, 'getSanPham']);
+    });
+
+    Route::group(['prefix' => '/don-hang'], function () {
+        Route::get('/', [DonHangController::class, 'viewDH']);
+        Route::get('/data', [DonHangController::class, 'getDataDonHang']);
+        Route::get('/chi-tiet/{id}', [DonHangController::class, 'chiTietDonHangAdmin']);
+        Route::post('/giao-hang', [DonHangController::class, 'changeGiaoHang']);
+    });
+
+    Route::group(['prefix' => '/thong-ke'], function () {
+        Route::get('/', [ThongKeController::class, 'index']);
+        Route::post('/', [ThongKeController::class, 'search']);
+    });
+
+    Route::group(['prefix' => '/quyen'], function () {
+        Route::get('/', [QuyenController::class, 'index']);
+        Route::get('/data', [QuyenController::class, 'getData']);
+        Route::get('/data-action', [QuyenController::class, 'getAction']);
+
+        Route::post('/create', [QuyenController::class, 'store']);
+        Route::post('/delete', [QuyenController::class, 'destroy']);
+        Route::post('/update', [QuyenController::class, 'update']);
+        Route::post('/update-action', [QuyenController::class, 'updateAction']);
     });
 });
